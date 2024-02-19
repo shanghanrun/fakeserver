@@ -55,7 +55,7 @@ fetchData({category: 'kr-enter', q: 'bts'}) --> 안됨
 fetchData({country:'us', page:1, pageSize:5}) --> 가능합니다.
 
 
-(readme2.png)
+![사용법](readme2.png)
 
 ### 깃허브의 내용을 clone 한 후에
 
