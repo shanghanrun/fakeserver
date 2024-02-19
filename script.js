@@ -3319,8 +3319,100 @@ function getData(query){
     
 }
 
-let data = fetchData({q:'장원영'})
-console.log('data ', data)
+
+
+// let data = fetchData({q:'장원영'})
+// console.log('data ', data)
 
 // 콘솔을 확인하면, 검색된 것이 한 건일 경우, pageData는 객체형태
 // 그래서 "articles": [pageData] 처럼 리스트에 담아주어야 된다.
+
+// function render(results){
+//     if (results == 0){
+//         alert('해당 기사는 없습니다.')
+//         return;
+//     } // 아무 것도 안한다.
+//     let showingList =[];
+//     if (paginatedDataList.length ==1){   // [{객체1개}]
+//         showingList =[...paginatedDataList]  // 객체를 리스트에 담아준다.
+//     } else{
+//         showingList = [...paginatedDataList[page-1]]
+//     }
+    
+//     console.log('showingList ', showingList)
+    
+//     const newsBoard = document.querySelector('#news-board')
+//     newsBoard.innerHTML =''; //비우고 시작
+//     const pagination = document.querySelector('.pagination');
+//     pagination.innerHTML =''// 기존내용 삭제
+
+//     let newsHTML =  showingList.map(news => 
+//             `<div class="row item">
+//                 <div class="col-lg-4">
+//                     <img src=${news.urlToImage || replaceImage}  />
+//                 </div>
+//                 <div class="col-lg-8">
+//                     <h2 class='title' onclick="getDetail('${news.url}')">${news.title}</h2>
+//                     <p class='content'>${news.content || news.description}</p>
+//                     <div>${news.source.name} : ${news.publishedAt}</div>
+//                 </div>
+//             </div>
+//         `
+//         ).join('')
+
+
+//     newsBoard.innerHTML = newsHTML;
+    
+//     pagination.innerHTML =  makePaginationHTML(groupIndex)
+
+//     console.log('page :', page)
+//     console.log('currentIndex :', currentIndex)
+//     console.log('groupIndex :', groupIndex)
+//     console.log('group :', group)
+
+
+//     // 바뀐 버튼 상태를 반영하기
+//     const prev = document.querySelector('#prev')
+//     const prevPage = document.querySelector('#prev-page')
+//     const next = document.querySelector('#next')
+//     const nextPage = document.querySelector('#next-page')
+
+//     const endIndexOfTheGroup = group.length-1  //해당그룹의 마지막 인덱스
+
+//     // prev next 등 비활성화 여부
+//     if(group.length ==1){
+//         // 단 한개의 아이템만 있는 경우
+//         prev.disabled = true;
+//         next.disabled = true;
+//         prevPage.disabled =true;
+//         nextPage.disabled =true;
+//     }
+
+//     if(currentIndex ==0){
+//         prev.disabled =true;
+        
+//     } else if(currentIndex == endIndexOfTheGroup){
+//         next.disabled = true;
+//     } 
+//     if(groupIndex ==0){
+//         prevPage.disabled = true;
+//     } else if(groupIndex == groups.length-1){
+//         nextPage.disabled = true;
+//     }
+
+//     // 현재 페이지 버튼 활성화(진하게)
+//     const pageButtons = document.querySelectorAll('.page-btn')
+//     for( let pageButton of pageButtons){
+//         if(pageButton.innerText == page.toString()){
+//             pageButton.classList.add('active')
+//         } else{
+//             pageButton.classList.remove('active')
+//         }
+//     }
+
+// }
+
+
+// function getDetail(url){
+//     window.location.href = url;
+// }
