@@ -3322,5 +3322,5 @@ function getData(query){
 let data = fetchData({q:'장원영'})
 console.log('data ', data)
 
-// 콘솔을 확인하면, 검색된 것이 객체하나 일 경우, pageData는 객체형태
+// 콘솔을 확인하면, 검색된 것이 한 건일 경우, pageData는 객체형태
 // 그래서 "articles": [pageData] 처럼 리스트에 담아주어야 된다.
