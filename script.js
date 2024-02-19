@@ -3202,7 +3202,7 @@ function paginateData(dataList, pageSize){
             }
             item = {...dataList[i]}
             list.push(item)
-        } else{   //10 의 배수
+        } else{   //pageSize 의 배수
             pagedList.push(list)
             list =[]
             item = {...dataList[i]}
