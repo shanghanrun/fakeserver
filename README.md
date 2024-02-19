@@ -55,13 +55,17 @@ fetchData({category: 'kr-enter', q: 'bts'}) --> 안됨
 fetchData({country:'us', page:1, pageSize:5}) --> 가능합니다.
 
 
+
+
+
+
 ![사용법](readme2.png)
 
 ### 깃허브의 내용을 clone 한 후에
 
 ### 위 그림처럼 scripts.js 파일에서, 기다란 코드의 내용을 축약시키고
 
-### 가장 아래에서 데어터를 받아오는 코드를 작성하시면 됩니다.active
+### 가장 아래에서 데어터를 받아오는 코드를 작성하시면 됩니다.
 
 ### 처음 설정은 index.html와 script.js가 연계되게 해 놓았는데,
 
