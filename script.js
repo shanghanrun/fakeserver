@@ -3184,59 +3184,6 @@ const total = {
     ]
 }
 
-// let totalData=[];    // total.articles  를 아래에서 할당할 것이다.
-// let searchedData=[]   // searched data의 전체
-// let categoryData = []
-
-// let paginatedDataList=[]  // [[{}..10개][{}...10개]...[]]
-// // showingList = paginatedDataList[page-1]
-// let paginatedSearchedDataList=[]  // searched data paginated
-// let paginatedDataListLength
-// let totalResults 
-// let searchedResults
-// let categoryResults
-
-
-// let page =1
-// const pageSize =10 // 한페이지에 보여질 item갯수
-// const groupSize =5
-// let group   // 리스트자료 [1,2,3,4,5] 식
-// let groups  // [ [1,2,3,4,5], [6,7,8,9,10],......]
-// let groupIndex =0;
-// let currentIndex = 0;     //해당그룹에서 위치 인덱스 [1,2,3,4,5] 에서
-// // 2 페이지를 보여주고 있다면 currentIndex는 1
-
-
-
-
-
-
-// const totalPages = Math.ceil(totalResults / pageSize) // 23
-// 여기서 값을 정하려 하면 '오류'가 난다. 그 이유는 totalResults가 아직 정해지지 않았기 때문이다.
-// 저 맨 아래에서 totalPages를 정해야 된다.
-
-// totalData = total.articles;
-// paginatedDataList = paginateData(totalData, pageSize)  // [ []...23개 ]
-// console.log('total.articles.length :', total.articles.length)  // 227
-// // /**
-//  * totalData = total.articles;  // [{},{},{},{}....]
-//  * paginatedDataList = paginateData(totalData, pageSize)  // [ [{}..10개]...23개 ] 
-//  */
-
-// totalResults = total.articles.length;
-// pageinatedListLength = paginatedDataList.length 
-// totalPages = Math.ceil(totalResults / pageSize) // 23
-
-// const replaceImage = 'noonatimes.png'
-
-
-// //! 실행 코드
-// groups = makeGroups()
-// render(paginatedDataList)
-
-
-
-
 function paginateData(dataList, pageSize){
     const dataLength = dataList.length;
     let pagedList = []
@@ -3270,300 +3217,6 @@ function paginateData(dataList, pageSize){
     console.log('length :', pagedList.length)
     return pagedList;
 }
-
-function makeGroups(){
-    // const totalPages = Math.ceil(totalResults / pageSize)  // 227 / 10 --> 23
-    console.log(totalPages)
-    groups =[]
-    let list =[]
-    for(let i=1; i<=totalPages; i++){
-        
-        if( i % groupSize != 0){
-            if( i==1){
-                list.push(i)   // [1]
-            }
-            list.push(i+1)     // 2, 3, 4, 5
-        } else{           // 5의 배수
-            groups.push(list)   // [1,2,3,4,5]
-            list =[]
-            list.push(i+1)       // [6]
-        }
-    
-        if ( i == totalPages){
-            list.pop() //  i+1로 잘못 추가된 것 뺀다.
-            groups.push(list)
-        }
-    }
-    console.log('groups : ', groups)
-    console.log('groups.length : ', groups.length)
-    return groups
-}
-
-function makePaginationHTML(groupIndex){   // 1, 2, 3...
-    
-    const currentGroup = groupIndex      // nextGroup을 다루기 위해 변수 필요
-    group = groups[currentGroup]  // 첫번째 그룹은 groups[0]  
-                       // [1,2,3,4,5] 혹은 [6,7,8,9,10]
-    
-
-    // 일단 페이지번호만 메긴다면
-    // let paginationHTML = group.map(i => {
-    //     return `<button onclick="moveToPage(${i})">${i}</button>`
-    //     }).join('')
-
-    // 나중에 <<prev page,   next page>> 를 누르는 버튼
-    // 이걸 누르면 groupIndex--    groupIndex++ ; render()
-
-
-    let paginationHTML =`<li class="prev-li"><button class="page-btn" id="prev-page" onclick="moveToPage('prev page')">prev page</button></li><li class="page-li"><button class="page-btn" id="prev" onclick="moveToPage(${page-1})">Prev</button></li>`;
-    // page가 전역변수라서 page-1 이 최신페이지에서 이전페이지가 된다.
-    
-    paginationHTML += group.map(i => {
-        return `<button class="page-btn" id="page" onclick="moveToPage(${i})">${i}</button>`
-        }).join('')
-
-    paginationHTML += `<li class="next-li"><button class="page-btn" id="next" onclick="moveToPage(${page+1})">Next</button></li><li class="next-li"><button class="page-btn" id="next-page" onclick="moveToPage('next page')">next page</button><span>${page} of ${totalPages} pages</span></li>`
-
-
-    return paginationHTML;
-}
-
-function moveToPage(pageNo){
-    console.log('clicked!')
-    if(pageNo == 'prev page'){
-        groupIndex--
-        group = groups[groupIndex]
-        page = group[0]
-        currentIndex = 0
-    } else if(pageNo == 'next page'){
-        groupIndex++
-        group = groups[groupIndex]
-        page = group[0]
-        currentIndex =0
-    } else {
-        page = pageNo;   
-        currentIndex = group.indexOf(page)
-    } 
-
-    render() 
-
-}
-
-
-function render(){
-    let showingList;
-    if(paginatedDataList.length ==1){
-        showingList = paginatedDataList;
-    } else{
-        showingList = paginatedDataList[page-1]
-    }
-    console.log('showingList ', showingList)
-    
-    const newsBoard = document.querySelector('#news-board')
-    newsBoard.innerHTML =''; //비우고 시작
-    const pagination = document.querySelector('.pagination');
-    pagination.innerHTML =''// 기존내용 삭제
-
-    let newsHTML;
-    if (showingList.length == 1){
-        console.log('단 1개 데이터')
-        let [news] =[...showingList];
-        newsHTML = `
-            <div class="row item">
-                <div class="col-lg-4">
-                            <img src=${news.urlToImage || replaceImage}  />
-                        </div>
-                        <div class="col-lg-8">
-                            <h2 class='title' onclick="getDetail('${news.url}')">${news.title}</h2>
-                            <p class='content'>${news.content || news.description}</p>
-                            <div>
-                                ${news.source.name} : ${news.publishedAt} 
-                            </div>
-                        </div>
-                </div>
-            </div>
-        `
-
-    } else {
-        newsHTML = showingList.map(news => 
-            `<div class="row item">
-                <div class="col-lg-4">
-                            <img src=${news.urlToImage || replaceImage}  />
-                        </div>
-                        <div class="col-lg-8">
-                            <h2 class='title' onclick="getDetail('${news.url}')">${news.title}</h2>
-                            <p class='content'>${news.content || news.description}</p>
-                            <div>
-                                ${news.source.name} : ${news.publishedAt} 
-                            </div>
-                        </div>
-                </div>
-            </div>
-        `).join('')
-    }
-
-    newsBoard.innerHTML = newsHTML;
-    pagination.innerHTML = makePaginationHTML(groupIndex)
-
-    console.log('page :', page)
-    console.log('currentIndex :', currentIndex)
-    console.log('groupIndex :', groupIndex)
-    console.log('group :', group)
-
-
-    // 바뀐 버튼 상태를 반영하기
-    const prev = document.querySelector('#prev')
-    const prevPage = document.querySelector('#prev-page')
-    const next = document.querySelector('#next')
-    const nextPage = document.querySelector('#next-page')
-
-    const endIndexOfTheGroup = group.length-1  //해당그룹의 마지막 인덱스
-
-    // prev next 등 비활성화 여부
-    if(group.length ==1){
-        // 단 한개의 아이템만 있는 경우
-        prev.disabled = true;
-        next.disabled = true;
-        prevPage.disabled =true;
-        nextPage.disabled =true;
-    }
-
-    if(currentIndex ==0){
-        prev.disabled =true;
-        
-    } else if(currentIndex == endIndexOfTheGroup){
-        next.disabled = true;
-    } 
-    if(groupIndex ==0){
-        prevPage.disabled = true;
-    } else if(groupIndex == groups.length-1){
-        nextPage.disabled = true;
-    }
-
-    // 현재 페이지 버튼 활성화(진하게)
-    const pageButtons = document.querySelectorAll('.page-btn')
-    for( let pageButton of pageButtons){
-        if(pageButton.innerText == page.toString()){
-            pageButton.classList.add('active')
-        } else{
-            pageButton.classList.remove('active')
-        }
-    }
-
-}
-
-
-function getDetail(url){
-     window.location.href = url;
-}
-
-function handleFileInput(event){
-    const file = event.target.files[0];
-    if(file){
-        const reader = new FileReader();
-    
-        // 2. 파일을 읽어온 후 실행되는 함수
-        reader.onload = (e) => {
-            const contents = e.target.result;
-            const data = JSON.parse(contents)
-            console.log('data: ', data)
-            console.log('data.status: ', data.status)
-            console.log('data.totalResults: ', data.totalResults)
-            
-            newsList = data.articles
-            console.log('newsList :', newsList)
-
-            render();
-            
-            // 여기서 파일 내용을 가지고 원하는 작업을 수행할 수 있습니다.
-        };
-        // 1. 파일을 읽어온다. (비동기)
-        reader.readAsText(file);
-    } else{
-        console.log('파일을 선택하지 않았습니다.')
-    }
-}
-
-function search(){
-    const input = document.querySelector('#search-input')
-    const value = input.value;
-    // 일단 total.articles [{}{}{}{}...] 모든 객체를 순회하면서
-    // 각 객체.title (문자열) 이 해당 단어를 포함하고 있는 지를 찾아야 된다.
-    // 그런데, 문자열에서 해당단어를 포함하는 지를 찾으려면, 예를 들어
-    //  '여신의 품격: 장원영(Ive)' 라면,
-    // 해당검색어단어(장원영)으로 split 하면, 리스트를 2개도 반환한다.
-    // 만약 해당검색어단어가 없다면, 리스트는 하나 반환한다.
-    // 그러므로 해당문자열로 split('해당문자열')하고, if (result.length ==2)인 경우,
-    // 해당 객체를,  list.push(해당객체) 식으로 담는다.
-    // 만약 검색이 많이 되어 10개를 넘는다면, 그때는 paginationList로 만들어야 되지만, 일단은 기본리스트로, 화면을 구성해 보자.
-
-
-    // 구성해 보니, 해당 아이템 {}이 들어 있는 [{}{}{}{}...10개] 단위 리스트가 출력된다.
-    // 이 리스트 안에서 filter를 해서 해당 아이템이 있는 리스트만 추려내야 된다.
-    // 그러기 위해 render()함수를 , 이제 보여줄 전체 리스트를 인자로 전달하는 함수로 바꾼다.
-
-    const articles = total.articles;
-    let list =[]
-    for (let article of articles){
-        if(article.title.split(value).length == 2){
-            const item = {...article}  // 원본과 분리
-            list.push(item)
-        }
-    }
-    console.log('검색결과 : ', list)
-    console.log('아이템갯수 : ', list.length)
-
-    searchedData = list;
-    searchedResults = list.length
-
-    page =1 ; //초기화
-    groupIndex =0;
-    currentIndex =0;
-
-    totalPages = Math.ceil(searchedResults / pageSize)
-
-    groups = makeGroups()
-    paginatedDataList = paginateData(searchedData, pageSize)
-    console.log('searchedData ', searchedData)
-    console.log('paginatedDataList ', paginatedDataList)
-    render()
-}
-
-
-function getCategory(category){
-    categoryData = totalData.filter( item => item.category == category)
-
-    categoryResults = categoryData.length
-
-    page =1 ; //초기화
-    groupIndex =0;
-    currentIndex =0;
-
-    totalPages = Math.ceil(categoryResults / pageSize)
-
-    groups = makeGroups()
-    paginatedDataList = paginateData(categoryData, pageSize)
-    console.log('categoryData ', categoryData)
-    console.log('paginatedDataList ', paginatedDataList)
-    render()
-
-}
-
-
- // country를 입력할 때면, category와 q 입력하지 말 것.
-// category를 입력할 때면, country와 q 입력하지 말 것.
-// q를 입력할 때면, category와 country 입력하지 말 것.
-// pageSize, page를 입력하지 않으면, 디폴트로 pageSize=10, page=1
-
-
-// const query ={
-//     country: 'us',  // 'kr'
-//     category: 'business',
-//     // 'general', 'entertainment', 'kr', 'kr-enter'
-//     q: '장원영',     // 검색어
-//     pageSize: 10,  // 한 페이지에 보여줄 아이템 갯수
-//     page: 1,       // 원하는 페이지  
-// }
 
 function fetchData(query){
     let {
@@ -3607,7 +3260,6 @@ function fetchData(query){
     return data;
 }
 
-
 function getData(query){
     const {
         country,
@@ -3631,7 +3283,7 @@ function getData(query){
         resultData = totalData.filter( item => item.category == category)
 
     } else if (q != null){
-        for (let article of totolData){
+        for (let article of totalData){
             if(article.title.split(q).length > 1){
                 const item = {...article}  // 원본과 분리
                 resultData.push(item)
@@ -3639,6 +3291,7 @@ function getData(query){
         }
         console.log('검색결과 : ', resultData)
         console.log('아이템갯수 : ', resultData.length)
+
     }
     totalResults = resultData.length
     if (totalResults == 0){
@@ -3656,49 +3309,16 @@ function getData(query){
         "status": "ok",
         totalResults,
         page,
-        "articles": pageData
+        "articles": [pageData]   //객체들을 리스트에 담아서
     };
     
 }
 
-let data = fetchData({q: '장원영'})
+
+
+let data = fetchData({country:'kr', pageSize:5, page:6})
+
 console.log('data : ', data)
 
 
 
-// function paginateData(dataList, pageSize){
-//     const dataLength = dataList.length;
-//     let pagedList = []
-//     let list =[]
-//     let item;
-
-//     if (totalResults ==0){
-//         return [];
-//     }
-//     if(dataLength == 1){ // dataList의 요소가 1개일 경우도 있다.
-//         return [...dataList]
-//     }
-
-//     for(let i=1; i<dataLength; i++){
-//         if(i % pageSize !=0){
-//             if(i==1){
-//                 item = {...dataList[0]}
-//                 list.push(item)
-//             }
-//             item = {...dataList[i]}
-//             list.push(item)
-//         } else{   //10 의 배수
-//             pagedList.push(list)
-//             list =[]
-//             item = {...dataList[i]}
-//             list.push(item)
-//         }
-
-//         if(i == dataLength -1){
-//             pagedList.push(list)
-//         }
-//     }
-//     console.log('pagedList :', pagedList)
-//     console.log('length :', pagedList.length)
-//     return pagedList;
-// }
