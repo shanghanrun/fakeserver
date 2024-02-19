@@ -3304,15 +3304,23 @@ function getData(query){
     
     let paginatedDataList = paginateData(resultData, pageSize)
     let pageData = paginatedDataList[page-1]
+    console.log('pageData :', pageData)
 
     return {
         "status": "ok",
         totalResults,
         page,
-        "articles": [pageData]   //객체들을 리스트에 담아서
+        "articles": [pageData]   
+        // pageData를 리스트에 담는 이유는, 
+        //! 검색된 것이 객체 하나 일 경우에는 pageData가 리스트가 아닌, 객체로 들어온다. 이것을 리스트에 담아주어야 된다.
+        // 만약 여러개가 검색되면 pageData는 리스트자료이지만,
+        // [pageData]해도 중복된 리스트가 아닌 단일 리스트가 된다.
     };
     
 }
 
-let data = fetchData({country:'kr', pageSize:5, page:6})
+let data = fetchData({q:'장원영'})
+console.log('data ', data)
 
+// 콘솔을 확인하면, 검색된 것이 객체하나 일 경우, pageData는 객체형태
+// 그래서 "articles": [pageData] 처럼 리스트에 담아주어야 된다.
