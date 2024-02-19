@@ -3316,5 +3316,3 @@ function getData(query){
 
 let data = fetchData({country:'kr', pageSize:5, page:6})
 
-
-

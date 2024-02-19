@@ -7,15 +7,12 @@
 
 - fetchData에 전달할 객체형태는
 
-### const query ={
-###    country: 'kr', 
-###    category: 'business',
-###    q: '장원영',
-###    pageSize: 10,
-###    page: 1,
-### }
+
+![객체사용예](query.png)
+
 
 과 같은 형태입니다.
+
 
 
 
