@@ -3184,38 +3184,30 @@ const total = {
     ]
 }
 
+
 function paginateData(dataList, pageSize){
-    const dataLength = dataList.length;
-    let pagedList = []
+    const pagedList =[]
     let list =[]
-    let item;
+    const dataLength = dataList.length
 
-    if(dataLength == 1){ // dataList의 요소가 1개일 경우도 있다.
-        return [...dataList]
+    if (dataLength <= pageSize){   // 일단 pageSize 5로 생각
+        console.log('paginatedData :', dataList)
+        return dataList
     }
 
-    for(let i=1; i<dataLength; i++){
-        if(i % pageSize !=0){
-            if(i==1){
-                item = {...dataList[0]}
-                list.push(item)
-            }
-            item = {...dataList[i]}
-            list.push(item)
-        } else{   //pageSize 의 배수
-            pagedList.push(list)
+    for( let i=0; i<dataLength; i++){  
+        list.push(dataList[i])         
+        if(list.length % pageSize == 0){
+            pagedList.push([...list])
             list =[]
-            item = {...dataList[i]}
-            list.push(item)
-        }
-
-        if(i == dataLength -1){
-            pagedList.push(list)
-        }
+        }  
     }
-    console.log('pagedList :', pagedList)
-    console.log('length :', pagedList.length)
-    return pagedList;
+    // 나머지 넣지 못한 것
+    if (list.length > 0){
+        pagedList.push([...list])
+    }
+    console.log('paginatedData :', pagedList)
+    return pagedList    
 }
 
 function fetchData(query){
@@ -3303,24 +3295,61 @@ function getData(query){
     }
     
     let paginatedDataList = paginateData(resultData, pageSize)
-    let pageData = paginatedDataList[page-1]
-    console.log('pageData :', pageData)
+    console.log('paginatedDataList :', paginatedDataList)
 
+    let sendingData = paginatedDataList[page-1]
+    console.log('sendingData', sendingData)
+    if(page>1) {
+        if(page > paginatedDataList.length 
+            || (!Array.isArray(paginatedDataList[0]))){
+            sendingData = [null];
+            alert('해당 페이지의 자료는 없습니다.\n페이지 체크하세요')
+        }
+    }
+    
+    if(!Array.isArray(sendingData)){ // 객체자료 일 경우
+        sendingData = [sendingData]
+    }
     return {
         "status": "ok",
         totalResults,
         page,
-        "articles": [pageData]   
-        // pageData를 리스트에 담는 이유는, 
-        //! 검색된 것이 객체 하나 일 경우에는 pageData가 리스트가 아닌, 객체로 들어온다. 이것을 리스트에 담아주어야 된다.
-        // 만약 여러개가 검색되면 pageData는 리스트자료이지만,
-        // [pageData]해도 중복된 리스트가 아닌 단일 리스트가 된다.
+        "articles": sendingData 
     };
     
 }
 
-let data = fetchData({q:'장원영'})
+let data = fetchData({country:'kr'})
 console.log('data ', data)
 
 // 콘솔을 확인하면, 검색된 것이 한 건일 경우, pageData는 객체형태
 // 그래서 "articles": [pageData] 처럼 리스트에 담아주어야 된다.
+
+
+
+
+
+
+
+//! 여기부터는 데이터를 불러와서 화면에 뿌리는 것이다.
+let basicDataList =[]
+let paginatedDataList=[]  // [[{}..10개][{}...10개]...[]]
+let paginatedDataListLength
+let totalResults 
+let totalGroupPages
+let searching = false;
+
+let page =1
+const pageSize =10 // 한페이지에 보여질 item갯수
+const groupSize =5
+let group   // 리스트자료 [1,2,3,4,5] 식
+let groups  // [ [1,2,3,4,5], [6,7,8,9,10],......]
+let groupIndex =0;
+let currentIndex = 0;  
+
+
+// 첫화면을 위해 일단 데이터 받아와 본다.
+basicDataList = [...data.articles]
+console.log('받아온 데이터의 articles :', basicDataList) 
+
+
