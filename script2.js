@@ -3333,8 +3333,7 @@ let groupSize =5
 let group   // 리스트자료 [1,2,3,4,5] 식
 let groups  // [ [1,2,3,4,5], [6,7,8,9,10],......]
 let groupIndex =0;
-let currentIndex = 0;    
-
+let currentIndex = 0; 
 
 const replaceImage = 'noonatimes.png'
 
@@ -3441,7 +3440,7 @@ function render(){
                 </div>
                 <div class="col-lg-8">
                     <h2 class='title' onclick="getDetail('${news.url}')">${news.title}</h2>
-                    <p class='content'>${news.content || news.description}</p>
+                    <p class='content'>${news.description || news.content}</p>
                     <div>${news.source.name} : ${news.publishedAt}</div>
                 </div>
             </div>
@@ -3456,7 +3455,7 @@ function render(){
                     </div>
                     <div class="col-lg-8">
                         <h2 class='title' onclick="getDetail('${news.url}')">${news.title}</h2>
-                        <p class='content'>${news.content || news.description}</p>
+                        <p class='content'>${news.description || news.content}</p>
                         <div>${news.source.name} : ${news.publishedAt}</div>
                     </div>
                 </div>
@@ -3491,7 +3490,8 @@ function render(){
     if(group.length <= groupSize){
         nextPage.disabled = true;
     }
-    if(groups.length > groupIndex+1){
+    if(groups.length > groupIndex+1){  
+        // 현재 5 그룹페이지(groupIndex 4 + 1)   groups =[[1][2][3][4][*5*][6]] 
         nextPage.disabled = false;
     }
 
@@ -3540,16 +3540,16 @@ function search(){
     render()
     input.value ='' // 인풋 리셋
 }
-function search2(){
-    const input = document.querySelector('#search-input')
-    const value = input.value;
-    const e = window.event; 
-    if (e.key =='Enter'){
-        query.q = value;
-        render()
-        input.value ='' // 인풋 리셋
-    } 
-}
+// function search2(){
+//     const input = document.querySelector('#search-input')
+//     const value = input.value;
+//     const e = window.event; 
+//     if (e.key =='Enter'){
+//         query.q = value;
+//         render()
+//         input.value ='' // 인풋 리셋
+//     } 
+// }
 
 
 function getCategory(카테고리){
