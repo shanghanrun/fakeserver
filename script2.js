@@ -3414,7 +3414,7 @@ function render(){
     page = query.page ;
     pageSize = query.pageSize;
     // groupIndex =0; 여기서 초기화하면 그룹인덱스가 영원히 안바뀐다...
-    currentIndex =0;
+    // currentIndex =0;
 
     totalGroupPages = Math.ceil(totalResults / pageSize)
 
