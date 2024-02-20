@@ -3324,32 +3324,3 @@ console.log('data ', data)
 
 // 콘솔을 확인하면, 검색된 것이 한 건일 경우, pageData는 객체형태
 // 그래서 "articles": [pageData] 처럼 리스트에 담아주어야 된다.
-
-
-
-
-
-
-
-//! 여기부터는 데이터를 불러와서 화면에 뿌리는 것이다.
-let basicDataList =[]
-let paginatedDataList=[]  // [[{}..10개][{}...10개]...[]]
-let paginatedDataListLength
-let totalResults 
-let totalGroupPages
-let searching = false;
-
-let page =1
-const pageSize =10 // 한페이지에 보여질 item갯수
-const groupSize =5
-let group   // 리스트자료 [1,2,3,4,5] 식
-let groups  // [ [1,2,3,4,5], [6,7,8,9,10],......]
-let groupIndex =0;
-let currentIndex = 0;  
-
-
-// 첫화면을 위해 일단 데이터 받아와 본다.
-basicDataList = [...data.articles]
-console.log('받아온 데이터의 articles :', basicDataList) 
-
-
