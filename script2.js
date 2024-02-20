@@ -3191,7 +3191,6 @@ function paginateData(dataList, pageSize){
     const dataLength = dataList.length
 
     if (dataLength <= pageSize){   // 일단 pageSize 5로 생각
-        console.log('paginatedData :', dataList)
         return dataList
     }
 
@@ -3206,7 +3205,6 @@ function paginateData(dataList, pageSize){
     if (list.length > 0){
         pagedList.push([...list])
     }
-    console.log('paginatedData :', pagedList)
     return pagedList    
 }
 
@@ -3239,7 +3237,6 @@ function fetchData(query){
     if (page == null){
         page = 1
     }
-    console.log('바뀐 쿼리 page:', page)
     let query2 ={
         country,
         pageSize,
@@ -3296,8 +3293,7 @@ function getData(query){
     
     let paginatedDataList = paginateData(resultData, pageSize)
     console.log('paginatedDataList :', paginatedDataList)
-    console.log('바뀐 query.page', query.page)
-    console.log('바뀐 page :', page)
+    
     let sendingData = paginatedDataList[page-1]
     console.log('sendingData', sendingData)
     if(page>1) {
@@ -3326,9 +3322,7 @@ function getData(query){
 
 // 화면을 만들어 보자
 
-let basicDataList =[]
-let paginatedDataList=[]  // [[{}..10개][{}...10개]...[]]
-let paginatedDataListLength
+let dataList =[]
 let totalResults 
 let totalGroupPages
 let searching = false;
@@ -3355,7 +3349,6 @@ render()
 
 function makeGroups(results){   // 들어오는 리절트에 따라서 그룹이 달라진다.
     totalGroupPages = Math.ceil(results / pageSize)
-    console.log(totalGroupPages)
     groups =[]
     let list =[]
     for(let i=1; i<=totalGroupPages; i++){
@@ -3368,8 +3361,6 @@ function makeGroups(results){   // 들어오는 리절트에 따라서 그룹이
     if(list.length > 0){
         groups.push([...list])
     }
-    console.log('groups : ', groups)
-    console.log('groups.length : ', groups.length)
     return groups
 }
 
@@ -3401,47 +3392,33 @@ function moveToPage(pageNo){
         page = group[0]
         currentIndex = 0
     } else if(pageNo == 'next page'){
-        console.log('next page눌림')
         groupIndex++
-        console.log('바뀐 그룹인덱스', groupIndex)
         group = groups[groupIndex]
         page = group[0]
-        console.log('바뀐 group :', group )
-        console.log('바귄 page :', page )
         currentIndex =0
     } else {
         page = pageNo;   
         currentIndex = group.indexOf(page)
     } 
     query.page = page;
-    console.log('바뀐 query.page :', query.page )
 
     render() 
 }
 
 
 function render(){
-    console.log('바뀐 query', query)
     const data = fetchData(query)
-    console.log('바뀐data :', data)
-    basicDataList = data.articles;
+    dataList = data.articles;
     totalResults = data.totalResults;
-
-    console.log('totalResults :', totalResults )
 
     page = query.page ;
     pageSize = query.pageSize;
-    console.log('page :', page)
-    console.log('pageSize :', pageSize)
     // groupIndex =0; 여기서 초기화하면 그룹인덱스가 영원히 안바뀐다...
     currentIndex =0;
 
     totalGroupPages = Math.ceil(totalResults / pageSize)
-    
-    console.log('totalGroupPages :', totalGroupPages)
 
     groups = makeGroups(totalResults)
-    console.log('검색된 데이터 ', basicDataList)
 
     if (totalResults == 0){
         alert('해당 기사는 없습니다.')
@@ -3455,8 +3432,8 @@ function render(){
     pagination.innerHTML =''// 기존내용 삭제
 
     let newsHTML = '';
-    if(basicDataList.length == 1){      //  [{url: ..}] 형태
-        const [news] = basicDataList;
+    if(dataList.length == 1){      //  [{url: ..}] 형태
+        const [news] = dataList;
         newsHTML = `
             <div class="row item">
                 <div class="col-lg-4">
@@ -3470,8 +3447,8 @@ function render(){
             </div>
         `;
     } else{
-        for (let i = 0; i < basicDataList.length; i++) {
-            const news = basicDataList[i];
+        for (let i = 0; i < dataList.length; i++) {
+            const news = dataList[i];
             newsHTML += `
                 <div class="row item">
                     <div class="col-lg-4">
@@ -3555,7 +3532,7 @@ const input = document.querySelector('#search-input')
 
 
 function search(){
-    // basicDataList 가 값을 갖고 있게 한다.
+    // dataList 가 값을 갖고 있게 한다.
     const input = document.querySelector('#search-input')
     const value = input.value;
     query.q = value
@@ -3576,8 +3553,6 @@ function search2(){
 
 
 function getCategory(카테고리){
-    console.log('카테고리 검색시작 :' )
-    console.log('category :', category)
     query.category = 카테고리;
  
     render()
