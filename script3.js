@@ -3561,13 +3561,12 @@ function search(){
 
 
 function getCategory(카테고리){
-    
+    initializeSettings()
     query.category = 카테고리;
     query.country = null;
     query.q = null;
  
     render()
-    initializeSettings()
 }
 
 function initializeSettings(){
@@ -3578,4 +3577,6 @@ function initializeSettings(){
     groups =[]
     groupIndex =0;
     currentIndex = 0;
+    query.page = page;
+    query.pageSize = pageSize;
 }
