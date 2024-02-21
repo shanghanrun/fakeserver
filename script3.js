@@ -3535,6 +3535,8 @@ const input = document.querySelector('#search-input')
 
 
 function search(){
+    //페이지와 인덱스등을 모두 초기화 해야 된다.
+    initializeSettings()
     // dataList 가 값을 갖고 있게 한다.
     const input = document.querySelector('#search-input')
     const value = input.value;
@@ -3559,9 +3561,21 @@ function search(){
 
 
 function getCategory(카테고리){
+    
     query.category = 카테고리;
     query.country = null;
     query.q = null;
  
     render()
+    initializeSettings()
+}
+
+function initializeSettings(){
+    page = 1
+    pageSize = 10
+    groupSize =5
+    group =[]
+    groups =[]
+    groupIndex =0;
+    currentIndex = 0;
 }
