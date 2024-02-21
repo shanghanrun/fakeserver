@@ -3391,6 +3391,8 @@ function moveToPage(pageNo){
     } else if(pageNo == 'next page'){
         groupIndex++
         group = groups[groupIndex]
+        console.log('groupIndex: ',groupIndex)
+        console.log('group :', group )
         page = group[0]
         currentIndex =0
     } else {
@@ -3407,6 +3409,9 @@ function render(){
     const data = fakeServer.fetchData(query)
     dataList = data.articles;
     totalResults = data.totalResults;
+    console.log('dataList :', dataList)
+    console.log('totalResults :', totalResults)
+
 
     page = query.page ;
     pageSize = query.pageSize;
@@ -3516,10 +3521,10 @@ function render(){
     }
 
 
-    //모든 쿼리를 초기화
-    query.country =null;
-    query.category = null;
-    query.q = null;
+    //!모든 쿼리를 초기화하면,, 페이지를 넘길 때...쿼리가 없게 된다.
+    // query.country =null;
+    // query.category = null;
+    // query.q = null;
 }
 
 function getDetail(url){
@@ -3534,6 +3539,9 @@ function search(){
     const input = document.querySelector('#search-input')
     const value = input.value;
     query.q = value
+    //다른 쿼리 무력화
+    query.country = null;
+    query.category = null;
 
     render()
     input.value ='' // 인풋 리셋
@@ -3552,6 +3560,8 @@ function search(){
 
 function getCategory(카테고리){
     query.category = 카테고리;
+    query.country = null;
+    query.q = null;
  
     render()
 }
