@@ -44,6 +44,12 @@ button {
     border: none;
     background: none;
     margin: 5px;
+    padding: 10px;
+}
+
+.menus button {
+    border-radius: 3px;
+    margin-right: 5px;
 }
 
 button:hover {
@@ -95,6 +101,10 @@ img {
 .page-btn {
     border: 1px solid rgb(123, 123, 254);
     border-radius: 5px;
+}
+
+.selected {
+    background: rgb(126, 154, 253);
 }
 
 .active {

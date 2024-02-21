@@ -3562,6 +3562,20 @@ function search(){
 
 function getCategory(카테고리){
     initializeSettings()
+
+    // 모든 버튼에서 selected 클래스를 제거
+    var buttons = document.querySelectorAll('.menus button');
+
+    buttons.forEach(function(button) {
+        if(button.classList.contains('selected')){
+            button.classList.remove('selected');
+        }
+    });
+    
+    // 클릭된 버튼에 selected 클래스 추가
+    var clickedButton = document.getElementById(카테고리);
+    clickedButton.classList.add('selected');
+
     query.category = 카테고리;
     query.country = null;
     query.q = null;
