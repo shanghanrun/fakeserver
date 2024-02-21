@@ -3528,7 +3528,6 @@ function render(){
 }
 
 function getDetail(url){
-    nitializeSettings()
     window.location.href = url;
 }
 
