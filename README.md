@@ -1,5 +1,5 @@
 # 사용방법
-- ## let data = fetchData({country:'kr'})
+- ## let data = fakeServer.fetchData({country:'kr'})
 
 처럼, fetchData() 함수 안에 객체를 인자로 전달하면 됩니다.
 
@@ -60,12 +60,12 @@ fetchData({country:'us', page:1, pageSize:5}) --> 가능합니다.
 
 ### 깃허브의 내용을 clone 한 후에
 
-### 위 그림처럼 scripts.js 파일에서, 기다란 코드의 내용을 축약시키고
+### 위 그림처럼 script3.js 파일에서, fakeServer의 기다란 코드의 내용을 축약시키고
 
-### 가장 아래에서 데이터를 받아오는 코드를 작성하시면 됩니다.
+### 아래에서 데이터를 받아오는 코드를 작성하시면 됩니다.
 
-### 처음 설정은 index.html와 script.js가 연계되게 해 놓았는데,
+### index3.html와 script3.js가 연계되게 해 놓았는데,
 
-### 이것은 데이터가 잘 받아와지는지 콘솔에서 확인하기 위한 것이고,
+### index3.html을 실행시키고, 콘솔을 확인하면 작동원리를 알 수 있습니다.
 
-### 확인을 한 이후에는 index.html 파일을 여러분들의 내용으로 바꾸시면 됩니다.
+### 확인을 한 이후에는 fakeServer 객체를 이용해서 여러분들의 프로젝트를 만드시면 됩니다.
