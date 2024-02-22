@@ -3186,22 +3186,30 @@ const fakeServer ={
         ]
     },
 
-    calcDataIndex: function(totalResults, pageSize, page){
-        const totalGroupPage = Math.ceil(totalResults / pageSize)
-        let firstIndex=0;
-        let lastIndex =9;
-        if(totalGroupPage == page){ // 요청한 페이지가 마지막 페이지인 경우
-            firstIndex = pageSize*(page-1),
-            lastIndex = totalResults-1
-        } else{
-            firstIndex = pageSize*(page-1),
-            lastIndex = firstIndex + pageSize-1
+    paginateData: function(dataList, pageSize){
+        const pagedList =[]
+        let list =[]
+        const dataLength = dataList.length
+    
+        if (dataLength <= pageSize){   // 일단 pageSize 5로 생각
+            return dataList
         }
-
-        return {firstIndex, lastIndex}
+    
+        for( let i=0; i<dataLength; i++){  
+            list.push(dataList[i])         
+            if(list.length % pageSize == 0){
+                pagedList.push([...list])
+                list =[]
+            }  
+        }
+        // 나머지 넣지 못한 것
+        if (list.length > 0){
+            pagedList.push([...list])
+        }
+        return pagedList    
     },
 
-    fetchData: function(query){
+    fetchData: function (query){
         let {
             country,
             pageSize,
@@ -3260,13 +3268,9 @@ const fakeServer ={
                 resultData = totalData.filter( item => (item.category =='business' || item.category =='entertainment' || item.category =='general'))
             } else {
                 resultData = totalData.filter( item => (item.category == 'kr' || item.category == 'kr-enter'))
-                console.log('검색결과 resultData :', resultData)
-                console.log('아이템갯수 totalResults : ', resultData.length)
             }    
         } else if (category !=null){
             resultData = totalData.filter( item => item.category == category)
-            console.log('검색결과 resultData :', resultData)
-            console.log('아이템갯수 totalResults : ', resultData.length)
     
         } else if (q != null){
             for (let article of totalData){
@@ -3275,8 +3279,8 @@ const fakeServer ={
                     resultData.push(item)
                 } 
             }
-            console.log('검색결과 resultData: ', resultData)
-            console.log('아이템갯수 totalResults : ', resultData.length)
+            console.log('검색결과 : ', resultData)
+            console.log('아이템갯수 : ', resultData.length)
     
         }
         totalResults = resultData.length
@@ -3288,10 +3292,22 @@ const fakeServer ={
             };
         }
         
-        let { firstIndex, lastIndex } = this.calcDataIndex(totalResults, pageSize, page)
-
-        const sendingData = resultData.slice(firstIndex, lastIndex+1)
-
+        let paginatedDataList = this.paginateData(resultData, pageSize)
+        console.log('paginatedDataList :', paginatedDataList)
+        
+        let sendingData = paginatedDataList[page-1]
+        console.log('sendingData', sendingData)
+        if(page>1) {
+            if(page > paginatedDataList.length 
+                || (!Array.isArray(paginatedDataList[0]))){
+                sendingData = [null];
+                alert('해당 페이지의 자료는 없습니다.\n페이지 체크하세요')
+            }
+        }
+        
+        if(!Array.isArray(sendingData)){ // 객체자료 일 경우
+            sendingData = [sendingData]
+        }
         return {
             "status": "ok",
             totalResults,
@@ -3390,11 +3406,9 @@ function moveToPage(pageNo){
 
 
 function render(){
-    console.log('query: ',query)
     const data = fakeServer.fetchData(query)
     dataList = data.articles;
     totalResults = data.totalResults;
-    console.log('받아온 데이터', data)
     console.log('dataList :', dataList)
     console.log('totalResults :', totalResults)
 
@@ -3420,9 +3434,7 @@ function render(){
     pagination.innerHTML =''// 기존내용 삭제
 
     let newsHTML = '';
-    if(dataList.length == 1){      
-        //  [{url: ..}] 형태로 리스트 안에 아이템이 단 하나이면 
-        // for문이나 map을 순회할 수 없다.
+    if(dataList.length == 1){      //  [{url: ..}] 형태
         const [news] = dataList;
         newsHTML = `
             <div class="row item">
@@ -3468,7 +3480,7 @@ function render(){
     const next = document.querySelector('#next')
     const nextPage = document.querySelector('#next-page')
 
-    const lastIndexOfTheGroup = group.length-1  //해당그룹의 마지막 인덱스
+    const endIndexOfTheGroup = group.length-1  //해당그룹의 마지막 인덱스
 
     // prev next 등 비활성화 여부
     if(group.length ==1){  
@@ -3489,7 +3501,7 @@ function render(){
     if(currentIndex ==0){
         prev.disabled =true;
         
-    } else if(currentIndex == lastIndexOfTheGroup){
+    } else if(currentIndex == endIndexOfTheGroup){
         next.disabled = true;
     } 
     if(groupIndex ==0){
