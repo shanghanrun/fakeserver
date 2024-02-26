@@ -4063,25 +4063,44 @@ const fakeServer ={
             }
             console.log('검색결과 resultData :', resultData)
             console.log('아이템갯수 totalResults : ', resultData.length)
-
-            // if(country =='us'){
-            //     resultData = totalData.filter( item => (item.category =='business' || item.category =='entertainment' || item.category =='general'))
-            // } else {
-            //     resultData = totalData.filter( item => (item.category == 'kr' || item.category == 'kr-enter'))
-            //     console.log('검색결과 resultData :', resultData)
-            //     console.log('아이템갯수 totalResults : ', resultData.length)
-            // }    
-        } else if (category !=null){
-            resultData = totalData.filter( item => item.category == category)
+   
+        } else if (category !=null){ // 장르검색 (장르번호)
+          const totalData = this.total.en_US.movies + this.total.ko_KR.movies
+            resultData = totalData.filter( movie=> movie.genre_ids.inclues(category))
             console.log('검색결과 resultData :', resultData)
             console.log('아이템갯수 totalResults : ', resultData.length)
     
-        } else if (q != null){
-            for (let article of totalData){
-                if(article.title.split(q).length > 1){
-                    const item = {...article}  // 원본과 분리
-                    resultData.push(item)
-                } 
+        } else if (q != null){  // 타이틀 검색
+            resultData =[]
+            const totalData = [...this.total.en_US.movies, ...this.total.ko_KR.movies]
+            console.log('totalData :', totalData)
+            if (q.includes("+")){
+              const q2 = q.split("+");
+              for (let movie of totalData){
+                if(movie.title.split(q2[0]).length >1){
+                  const item = {...movie}
+                  if(movie.title.split(q2[1]).length >1){
+                    const item2 ={...movie}
+                    if(item == item2){
+                      resultData.push(item)
+                    } else{
+                      resultData.push(item);
+                      resultData.push(item2);
+                    }
+                  } 
+                } else if(movie.title.split(q2[1])>1){
+                  const item = {...movie}
+                  resultData.push(item)
+                }
+              }
+            } else{
+              for (let movie of totalData){
+                console.log('movie :', movie )
+                  if(movie.title.split(q).length > 1){
+                      const item = {...movie}  // 원본과 분리
+                      resultData.push(item)
+                  } 
+              }
             }
             console.log('검색결과 resultData: ', resultData)
             console.log('아이템갯수 totalResults : ', resultData.length)
@@ -4130,7 +4149,7 @@ const replaceImage = 'noonatimes.png'
 
 //! 실행 코드
 // let query ={country: 'en-US', page: page, pageSize: pageSize} 
-let query ={country: 'ko-KR', page: page, pageSize: pageSize} 
+let query ={q:"랜드", page: page, pageSize: pageSize} 
 render()
 
 
