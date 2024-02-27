@@ -4039,6 +4039,23 @@ const fakeServer ={
       const data = this.total.news;
       return data;
     },
+    sortMovie: function(by){
+      const totalData= [...this.total.en_US.movies, ...this.total.ko_KR.movies];
+      let resultData =[];
+      if(by =='인기순'){
+        resultData = totalData.sort((a,b)=> b.popularity -a.popularity)
+      } else if(by =='최신순'){
+        resultData = totalData.sort((a,b)=> {
+          const dateA = new Date(a.release_date);
+          const dateB = new Date(b.release_date);
+          return dateB - dateA;
+        })
+      } else {
+        resultData = totalData;
+      }
+      
+      return resultData;
+    },
 
     calcDataIndex: function(totalResults, pageSize, page){
         const totalGroupPage = Math.ceil(totalResults / pageSize)
@@ -4120,7 +4137,7 @@ const fakeServer ={
             console.log('아이템갯수 totalResults : ', resultData.length)
    
         } else if (category !=null){ // 장르검색 (장르번호)
-          const totalData = this.total.en_US.movies + this.total.ko_KR.movies
+          const totalData = [...this.total.en_US.movies, ...this.total.ko_KR.movies];
             resultData = totalData.filter( movie=> movie.genre_ids.inclues(category))
             console.log('검색결과 resultData :', resultData)
             console.log('아이템갯수 totalResults : ', resultData.length)
